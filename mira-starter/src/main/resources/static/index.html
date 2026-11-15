@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Test - Streaming HLS</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+
+<header>
+    <h1>🎬 Dashboard de Test — Streaming HLS</h1>
+    <p class="subtitle">Upload, lecture HLS (hls.js) et construction de liens de streaming</p>
+</header>
+
+<main class="container">
+
+    <!-- SECTION 1: UPLOAD -->
+    <section class="card">
+        <h2>1. Upload de vidéo <span class="badge">POST</span></h2>
+
+        <p class="hint">
+            Envoie un fichier vidéo vers le serveur pour conversion HLS.
+        </p>
+
+        <form id="uploadForm">
+
+            <!-- Titre -->
+            <div class="form-group">
+                <label for="titleInput">Titre de la vidéo</label>
+
+                <input
+                        type="text"
+                        id="titleInput"
+                        name="title"
+                        placeholder="Ex: Conférence islamique"
+                        required
+                >
+            </div>
+
+
+            <!-- Description -->
+            <div class="form-group">
+                <label for="descriptionInput">Description</label>
+
+                <textarea
+                        id="descriptionInput"
+                        name="description"
+                        placeholder="Description de la vidéo..."
+                        rows="3"
+                ></textarea>
+            </div>
+
+
+            <!-- Visibilité -->
+            <div class="form-group">
+                <label for="visibilityInput">Visibilité</label>
+
+                <select
+                        id="visibilityInput"
+                        name="visibility"
+                >
+                    <option value="PUBLIC" selected>
+                        Public
+                    </option>
+
+                    <option value="PRIVATE">
+                        Privé
+                    </option>
+                </select>
+            </div>
+
+
+            <!-- Fichier -->
+            <div class="form-group">
+                <label for="fileInput">
+                    Fichier vidéo
+                </label>
+
+                <input
+                        type="file"
+                        id="fileInput"
+                        name="video"
+                        accept="video/*"
+                        required
+                >
+
+                <button
+                        type="submit"
+                        id="uploadSubmitBtn"
+                >
+                    Uploader
+                </button>
+            </div>
+
+        </form>
+
+
+        <!-- Progression -->
+        <div
+                class="progress-track"
+                id="uploadProgressTrack"
+        >
+            <div
+                    class="progress-fill"
+                    id="uploadProgressFill"
+            ></div>
+        </div>
+
+
+        <!-- Résultat -->
+        <div
+                id="uploadResult"
+                class="result-box hidden"
+        ></div>
+
+    </section>
+
+    <!-- SECTION 2: LECTEUR HLS -->
+    <section class="card">
+        <h2>2. Lecteur HLS <span class="badge">GET</span></h2>
+        <p class="hint">Charge une playlist .m3u8 et la joue via hls.js (ou nativement sur Safari).</p>
+        <div class="form-group">
+            <input type="text" id="streamUrl"
+                   placeholder="http://localhost:8080/stream/abc123/playlist.m3u8"
+                   value="http://localhost:8080/stream/abc123/playlist.m3u8">
+            <button onclick="loadStream()">Charger</button>
+        </div>
+
+        <video id="video" controls autoplay muted></video>
+
+        <div id="status" class="status info">En attente...</div>
+        <div id="log" class="log"></div>
+    </section>
+
+    <!-- SECTION 3: CONSTRUCTEUR DE LIEN DE STREAMING -->
+    <section class="card">
+        <h2>3. Constructeur de lien <span class="badge">/stream/{videoId}/{*filename}</span></h2>
+        <p class="hint">Construit une URL vers ton contrôleur à partir d'un videoId et d'un nom de fichier (playlist, segment .ts, etc.).</p>
+        <div class="form-grid">
+            <input type="text" id="linkVideoId" placeholder="videoId (ex: abc123)">
+            <input type="text" id="linkFilename" placeholder="fichier (ex: playlist.m3u8)" value="playlist.m3u8">
+        </div>
+        <div class="actions">
+            <button onclick="buildStreamUrl()">Construire l'URL</button>
+            <button onclick="useInPlayer()" class="secondary">Lire dans le lecteur ↑</button>
+            <button onclick="openStreamLink()" class="secondary">Ouvrir</button>
+            <button onclick="downloadStreamLink()" class="secondary">Télécharger</button>
+        </div>
+        <div id="linkResult" class="result-box hidden"></div>
+    </section>
+
+    <!-- SECTION 4: APERÇU RAPIDE -->
+    <section class="card">
+        <h2>4. Aperçu rapide</h2>
+        <p class="hint">Prévisualise directement une image, un audio ou un mp4 servi par le même endpoint (utilise les champs de la section 3).</p>
+        <button onclick="loadPreview()" class="secondary">Prévisualiser</button>
+        <div id="previewBox" class="preview-box"></div>
+    </section>
+
+</main>
+
+<!-- hls.js via CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.5.13/hls.min.js"></script>
+<script src="./js/app.js"></script>
+</body>
+</html>

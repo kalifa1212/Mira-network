@@ -1,0 +1,73 @@
+package com.hforge.Model;
+
+import com.hforge.Dto.TypePredication;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
+import java.util.Date;
+
+@Entity
+@Table(name="predication")
+@EqualsAndHashCode(callSuper=true)
+@Data @NoArgsConstructor @AllArgsConstructor
+public class Predication extends AbstractEntity {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Column(name="date")
+	private Date date;
+
+	@Column(name="heure")
+	@Temporal(TemporalType.TIME)
+	private Date heure;
+
+	@Column(name="duree")
+	@Temporal(TemporalType.TIME)
+	private Date duree;
+	
+	@Column(name="theme")
+	private String theme;
+	
+	@Column(name="fichier")
+	private String fichier;
+	
+	@Column(name="type")// sermon, preche ou conference.
+	private TypePredication type;
+
+	@Column(name="langue") //TODO francais,anglais,fulfulde etc
+	private Langue langue;
+	
+	@Column(name="idimam")
+	private Integer idImam;
+	
+	@Column(name="idmosque")
+	private Integer idMosque;
+
+	@Column(name="info")
+	private String  Info;
+
+	@Column(name="nomimam")
+	private String  nomImam;
+
+	@Column(name="nommosque")
+	private String  nomMosque;
+
+	@Column(name="type_doc")
+	private String type_doc;
+
+	private String mimeType; // pour stocker le type de fichier (video/mp4, etc.)
+	private Long size;       // taille en octets
+	private String resolution; // ex: "1920x1080"
+	private String thumbnailUrl; // lien de l'image si video
+	private String ressourceUrl;
+
+	@OneToOne(mappedBy = "predication")
+	private Documents documents ;
+	
+}

@@ -1,0 +1,98 @@
+package com.hforge.Services.Impl;
+
+import com.hforge.Dto.SuivreDto;
+import com.hforge.Exceptions.EntityNotFoundException;
+import com.hforge.Exceptions.ErrorCodes;
+import com.hforge.Exceptions.InvalidEntityException;
+import com.hforge.Model.Mosque;
+import com.hforge.Model.Suivre;
+import com.hforge.Model.TypeCompte;
+import com.hforge.Model.Utilisateur;
+import com.hforge.Repository.MosqueRepository;
+import com.hforge.Repository.SuivreRepository;
+import com.hforge.Repository.UtilisateurRepository;
+import com.hforge.Services.Suivre_Utilisateur_MosqueService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+@Slf4j
+@Service
+public class Suivre_Utilisateur_MosqueServiceImpl implements Suivre_Utilisateur_MosqueService {
+
+    private SuivreRepository suivreRepository;
+    private MosqueRepository mosqueRepository;
+    private UtilisateurRepository utilisateurRepository;
+
+    @Autowired
+    public Suivre_Utilisateur_MosqueServiceImpl(
+            SuivreRepository suivreRepository,
+            UtilisateurRepository utilisateurRepository,
+            MosqueRepository mosqueRepository
+    ) {
+        this.suivreRepository=suivreRepository;
+        this.mosqueRepository=mosqueRepository;
+        this.utilisateurRepository=utilisateurRepository;
+    }
+
+    @Override
+    public SuivreDto save(SuivreDto dto) {
+        List<String> errors = validate(dto);
+        if(!errors.isEmpty()) {
+            //log.error("La mosque est non valide {}",dto);
+            throw new InvalidEntityException("Les information entrer ne sont pas valide ", ErrorCodes.SUIVRE_NOT_VALID,errors);
+        }
+        Optional<Mosque> mosque= Optional.of(new Mosque());
+        Optional<Utilisateur> utilisateur= Optional.of(new Utilisateur());
+        if(dto.getMosque()!=0){
+             mosque=mosqueRepository.findById(dto.getMosque());
+            if(mosque.isEmpty()) {
+                throw new EntityNotFoundException("Aucune mosque avec l'id "+dto.getMosque()+" n'a ete trouver",ErrorCodes.MOSQUE_NOT_EXIST);
+            }
+        }
+
+         if(dto.getUtilisateur()!=0){
+            utilisateur=utilisateurRepository.findById(dto.getUtilisateur());
+            if(utilisateur.isEmpty()) {
+                throw new EntityNotFoundException("Aucun utilisateur avec l'id "+dto.getUtilisateur()+" n'a ete trouver",ErrorCodes.MOSQUE_NOT_EXIST);
+            }
+            if(utilisateur.get().getTypecompte()!= TypeCompte.PREDICATEUR && utilisateur.get().getTypecompte()!=TypeCompte.IMAM){
+                throw new EntityNotFoundException("Aucun utilisateur n'est pas predicateur ni Imam",ErrorCodes.SIMPLE_UTILISATEUR);
+
+            }
+        }
+
+
+        return SuivreDto.fromEntity(suivreRepository.save(SuivreDto.toEntity(dto)));
+    }
+
+    @Override
+    public List<Suivre> findAll() {
+        return null;
+    }
+
+    @Override
+    public void delete(Integer id) {
+        Optional<Utilisateur> utilisateur= utilisateurRepository.findById(id);
+        utilisateurRepository.delete(utilisateur.get());
+    }
+
+    public static List<String> validate(SuivreDto suivreDto){
+        List<String> errors = new ArrayList<>();
+        if(suivreDto==null ) {
+            errors.add("veullez renseigner les données");
+        }
+        if (suivreDto.getMosque()==null&&suivreDto.getIdimamsuivie()==null)
+        {
+            errors.add("veullez entrer la mosque ou l'imam");
+        }
+        if (suivreDto.getUtilisateur()==null)
+        {
+            errors.add("veullez entrer l'utilisateur");
+        }
+        return errors;
+    }
+}
