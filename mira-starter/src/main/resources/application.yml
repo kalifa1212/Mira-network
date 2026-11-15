@@ -3,22 +3,6 @@ spring:
     user:
       name: admin
       password: admin
-  ##  database info
-  datasource:
-#     url: jdbc:postgresql://localhost:5432/miraapi?createDatabaseIfNotExist=true
-#     username:  postgres
-#     password: dancali
-#     driver-class-name: org.postgresql.Driver
-    #render connexion reussi
-   url: jdbc:postgresql://dpg-dbspjc0n74is73ai7gcg-a.oregon-postgres.render.com:5432/miradb_9xiy
-   username: root
-   password: 9KlI8SHxXFFFF9l83gIMinO19vlhL5Zi
-   driver-class-name: org.postgresql.Driver
-    #connexion a neon Test toujours encours
-#         url: jdbc:postgresql://ep-solitary-wind-02190521-pooler.us-east-2.aws.neon.tech/muslembd?sslmode=require
-#         username:
-#         password:
-#         driver-class-name: org.postgresql.Driver
         #  gestion des session jdbc
 #  session:
 #    jdbc:

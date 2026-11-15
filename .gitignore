@@ -3,7 +3,14 @@ target/
 data
 uploads
 !.mvn/wrapper/maven-wrapper.jar
+# Configurations locales
+**/application-local.yml
+**/application-local.properties
 
+# Secrets
+.env
+.env.*
+!.env.example
 # Java
 *.class
 *.log

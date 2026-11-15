@@ -1,0 +1,8 @@
+spring:
+  ##  database info
+  datasource:
+    #render connexion reussi
+    url: jdbc:postgresql://dpg-dbspjc0n74is73ai7gcg-a.oregon-postgres.render.com:5432/miradb_9xiy
+    username: root
+    password: 9KlI8SHxXFFFF9l83gIMinO19vlhL5Zi
+    driver-class-name: org.postgresql.Driver
