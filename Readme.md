@@ -107,7 +107,7 @@ docker-compose up -d
 ```
 ### Hébergement sur Render
 1. Pousser le code sur GitHub
-2. Connecter Render à GitHub et déployer
+2. Connecter Render à GitHub et déployer le projet
 
 ---
 
