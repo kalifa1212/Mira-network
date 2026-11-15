@@ -1,22 +1,24 @@
 
-# Étape 1 : Build
+# Étape 1 : Build Maven
 FROM maven:3.8.5-openjdk-17 AS build
 
 WORKDIR /app
 
 COPY . .
 
+# Compiler le projet depuis le POM parent
 RUN mvn clean package -DskipTests
 
-# Vérifier les fichiers JAR générés
-RUN find /app -name "*.jar"
+# Vérifier les JAR générés
+RUN find /app -type f -name "*.jar"
 
 # Étape 2 : Image finale
 FROM openjdk:17.0.1-jdk-slim
 
 WORKDIR /app
 
-COPY --from=build /app/target/*.jar mira.jar
+# Copier le JAR du module mira-starter
+COPY --from=build /app/mira-starter/target/mira-starter-1.0.jar mira.jar
 
 EXPOSE 8080
 
