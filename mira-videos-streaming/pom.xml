@@ -16,6 +16,12 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -38,9 +44,14 @@
 <!--            <version>0.0.1-SNAPSHOT</version>-->
 <!--        </dependency>-->
         <dependency>
-            <groupId>com.hforge</groupId>
+            <groupId>com.github.kalifa1212.File-library</groupId>
             <artifactId>file-library-starter</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>v1.0.0</version>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.hforge</groupId>-->
+<!--            <artifactId>file-library-starter</artifactId>-->
+<!--            <version>1.0-SNAPSHOT</version>-->
+<!--        </dependency>-->
     </dependencies>
 </project>
