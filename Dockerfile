@@ -7,7 +7,7 @@ RUN mvn clean package -DskipTests
 # Étape 2 : image finale
 FROM openjdk:17.0.1-jdk-slim
 WORKDIR /app
-COPY --from=build /app/target/mira-starter-1.0.jar mira.jar
+COPY --from=build /app/target/*.jar mira.jar
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "ModuleUser.jar"]
 
